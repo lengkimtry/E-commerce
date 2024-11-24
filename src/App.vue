@@ -2,57 +2,52 @@
   <div id="app" class="parent">
     <!-- Categories Section -->
     <div class="parent-category">
-      <div v-for="(category, index) in categories" :key="index">
-        <Category
-          :imageSrc="category.imageSrc"
-          :title="category.title"
-          :itemCount="category.itemCount"
-          :imageBgColor="category.imageBgColor"
-          :textBgColor="category.textBgColor"
-        />
-      </div>
+      <CategoryComponent
+        v-for="(category, index) in categories"
+        :key="index"
+        :imageSrc="category.imageSrc"
+        :title="category.title"
+        :itemCount="category.itemCount"
+        :imageBgColor="category.imageBgColor"
+        :textBgColor="category.textBgColor"
+      />
     </div>
     <br />
-     <!-- Promotions Section -->
-     <div class="parent-promotion">
-      <div
-        class="child-promotion"
+    <!-- Promotions Section -->
+    <div class="parent-promotion">
+      <PromotionComponent
         v-for="(promotion, index) in promotions"
         :key="index"
+        :imageSrc="promotion.imageSrc"
+        :imageAlt="promotion.imageAlt"
+        :headerText="promotion.headerText"
       >
-        <!-- Pass props dynamically to Promotion component -->
-        <Promotion
-          :imageSrc="promotion.imageSrc"
-          :imageAlt="promotion.imageAlt"
-          :headerText="promotion.headerText"
-        />
+        <!-- Button Slot -->
         <Button
-          class="button"
           :label="promotion.buttonLabel"
           :color="promotion.buttonColor"
           size="12px"
-          @click="primaryAction"
+          @click="primaryAction(promotion)" 
         />
-      </div>
+      </PromotionComponent>
     </div>
   </div>
 </template>
 
 <script>
 import Button from "./components/Button.vue";
-import Category from "./components/Category.vue";
-import Promotion from "./components/Promotion.vue";
+import CategoryComponent from "./components/Category.vue";
+import PromotionComponent from "./components/Promotion.vue";
 
 export default {
   name: "App",
   components: {
-    Category,
-    Promotion,
+    CategoryComponent,
+    PromotionComponent,
     Button,
   },
   data() {
     return {
-      // Default mock data for display
       categories: [
         {
           imageSrc: "./../../public/burger.png",
@@ -63,66 +58,17 @@ export default {
         },
         {
           imageSrc: "./../../public/peach.png",
-          title: "peach",
+          title: "Peach",
           itemCount: 10,
           imageBgColor: "#FFFCEB",
           textBgColor: "#FFFCEB",
         },
         {
           imageSrc: "./../../public/kiwi.png",
-          title: "organic kiwi",
+          title: "Organic Kiwi",
           itemCount: 5,
           imageBgColor: "#ECFFEC",
           textBgColor: "#ECFFEC",
-        },
-        {
-          imageSrc: "./../../public/apple.png",
-          title: "apple",
-          itemCount: 10,
-          imageBgColor: "#FEEFEA",
-          textBgColor: "#FEEFEA",
-        },
-        {
-          imageSrc: "./../../public/snack.png",
-          title: "snack",
-          itemCount: 5,
-          imageBgColor: "#FFF3EB",
-          textBgColor: "#FFF3EB",
-        },
-        {
-          imageSrc: "./../../public/blackplum.png",
-          title: "black plum",
-          itemCount: 10,
-          imageBgColor: "#FFF3FF",
-          textBgColor: "#FFF3FF",
-        },
-        {
-          imageSrc: "./../../public/cabbage.png",
-          title: "vigetable",
-          itemCount: 5,
-          imageBgColor: "#F2FCE4",
-          textBgColor: "#F2FCE4",
-        },
-        {
-          imageSrc: "./../../public/headphone.png",
-          title: "headphone",
-          itemCount: 10,
-          imageBgColor: "#FFFCEB",
-          textBgColor: "#FFFCEB",
-        },
-        {
-          imageSrc: "./../../public/cakemilk.png",
-          title: "cake & mike",
-          itemCount: 5,
-          imageBgColor: "#F2FCE4",
-          textBgColor: "#F2FCE4",
-        },
-        {
-          imageSrc: "./../../public/orange.png",
-          title: "orange",
-          itemCount: 10,
-          imageBgColor: "#FFF3FF",
-          textBgColor: "#FFF3FF",
         },
       ],
       promotions: [
@@ -130,44 +76,30 @@ export default {
           imageSrc: "/onion.png",
           imageAlt: "Fresh Onion",
           headerText: "Everyday Fresh & Clean with Our Products",
-          buttonLabel: "Buy Now",
-          buttonColor: "#007BFF",
+          buttonLabel: "Shop Now",
+          buttonColor: "#00ff00",  // Color for this button
         },
         {
           imageSrc: "/onion.png",
           imageAlt: "Strawberry Milk",
           headerText: "Delicious & Nutritious Strawberry Milk",
-          buttonLabel: "Learn More",
-          buttonColor: "#28A745",
+          buttonLabel: "Shop Now",
+          buttonColor: "#FF9F00",  // Color for this button
         },
         {
           imageSrc: "/onion.png",
           imageAlt: "Fresh Carrot",
           headerText: "Healthy Snacks with Fresh Carrots",
-          buttonLabel: "Explore",
-          buttonColor: "#FFC107",
+          buttonLabel: "Shop Now",
+          buttonColor: "#FF9F00",  // Color for this button
         },
       ],
     };
   },
   methods: {
-    primaryAction() {
-      alert("Primary button clicked!");
+    primaryAction(promotion) {
+      alert("Let's shop: " + promotion.headerText);  // Use the promotion data for the alert
     },
-    // Keeping fetch methods for future use
-    async fetchCategories() {
-      // Placeholder for API call
-      console.log("Fetching categories...");
-    },
-    async fetchPromotions() {
-      // Placeholder for API call
-      console.log("Fetching promotions...");
-    },
-  },
-  mounted() {
-    // Commented out for now; uncomment to enable API fetching
-    // this.fetchCategories();
-    // this.fetchPromotions();
   },
 };
 </script>
@@ -175,30 +107,21 @@ export default {
 <style>
 .parent {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .parent-category {
   display: flex;
-  flex-direction: row;
-  gap: 22px;
+  gap: 20px;
+  margin-bottom: 20px;
 }
 
 .parent-promotion {
   display: flex;
-  flex-direction: row;
   gap: 20px;
 }
 
-.child-promotion {
-  position: relative;
-  margin-top: 20px;
-}
-
 .button {
-  position: absolute;
-  top: 190px;
-  left: 48px;
+  margin-top: 10px;
 }
-
 </style>
