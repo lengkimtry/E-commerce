@@ -1,11 +1,11 @@
 <template>
-  <div :style="{ backgroundColor: imageBgColor }" class="category-container">
+  <div :style="{ backgroundColor: color }" class="category-container">
     <div class="image">
-      <img :src="imageSrc" :alt="title" />
+      <img :src="'http://localhost:3000/' + image" :alt="name" />
     </div>
     <div class="text">
-      <h2 :style="{ backgroundColor: textBgColor }" class="header">{{ title }}</h2>
-      <p class="paragraph">{{ itemCount }} items</p>
+      <h2 :style="{ backgroundColor: textBgColor }" class="header">{{ name }}</h2>
+      <p class="paragraph">{{ productCount }} items</p>
     </div>
   </div>
 </template>
@@ -14,14 +14,15 @@
 export default {
   name: "Category",
   props: {
-    imageSrc: String,
-    title: String,
-    itemCount: Number,
-    imageBgColor: String,
-    textBgColor: String,
+    name: String,          
+    image: String,         
+    productCount: Number,  
+    color: String,         
+    textBgColor: String,   
   },
 };
 </script>
+
 
 <style scoped>
 .category-container {
